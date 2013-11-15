@@ -7,6 +7,7 @@ from scrapy.item import Item, Field
 
 class RedditScraperItem(Item):
     title = Field()
+    url = Field()
     post_id = Field()
     creation_time = Field()
     domain = Field()
