@@ -6,6 +6,11 @@
 from scrapy.item import Item, Field
 
 class RedditScraperItem(Item):
-    # define the fields for your item here like:
-    # name = Field()
-    pass
+    title = Field()
+    post_id = Field()
+    creation_time = Field()
+    domain = Field()
+    author = Field()
+    subreddit = Field()
+    submission_type = Field()
+
