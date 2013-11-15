@@ -3,6 +3,16 @@ import simplejson as json
 import pprint
 pp = pprint.PrettyPrinter()
 
+#           /      \
+#        \  \  ,,  /  /
+#         '-.`\()/`.-'
+#        .--_'(  )'_--.
+#       / /` /`""`\ `\ \
+#        |  |  ><  |  |
+#        \  \      /  /
+#            '.__.'
+#   we climbin in ya internets
+#   we snatchin your reddits up
 
 class PostSpider(BaseSpider):
     name = "reddit_post"
