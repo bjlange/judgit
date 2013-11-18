@@ -1,4 +1,5 @@
 from scrapy.spider import BaseSpider
+from scrapy.http import Request
 from reddit_scraper.items import RedditScraperItem
 import simplejson as json
 import pprint
@@ -25,7 +26,6 @@ class PostSpider(BaseSpider):
 
     def parse(self, response):
         raw_data = json.loads(response.body)
-        items = []
         for story in raw_data['data']['children']:
 
             item = RedditScraperItem()
@@ -42,12 +42,16 @@ class PostSpider(BaseSpider):
             else:
                 item["media_embed"] = False
             
-            items.append(item)
+            # yield the item, Scrapy sends it to the item pipeline
+            yield item
         
-        # id of the last post received, for forming the next url like so:
+        # JSON includes the id of the last post received, for forming
+        # the next url like so:
         # http://reddit.com/r/doge/new.json?after=t3_1qluhk
-        print raw_data['data']['after']
-
-        return items
-
-        pass
+        subreddit_name = raw_data['data']['children'][0]['data']['subreddit']
+        after = raw_data['data']['after']
+        url = "http://reddit.com/r/%s/new.json?after=%s" % (subreddit_name, 
+                                                            after)
+        
+        # yield http request, Scrapy will fire off this script for that one.
+        yield Request(url, callback=self.parse)
