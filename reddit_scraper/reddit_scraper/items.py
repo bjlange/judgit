@@ -13,5 +13,5 @@ class RedditScraperItem(Item):
     domain = Field()
     author = Field()
     subreddit = Field()
-    submission_type = Field()
+    media_embed = Field()
 

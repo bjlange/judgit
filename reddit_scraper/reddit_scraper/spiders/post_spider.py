@@ -37,8 +37,10 @@ class PostSpider(BaseSpider):
             item["author"] = story['data']['author']
             item["subreddit"] = story['data']['subreddit']
 
-            # what should we use for submission type? media_embed?
-            # item["submission_type"] = story['data']['']
+            if story['data']['media'] == "null":
+                item["media_embed"] = True
+            else:
+                item["media_embed"] = False
             
             items.append(item)
         
