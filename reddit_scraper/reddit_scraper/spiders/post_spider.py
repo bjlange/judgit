@@ -15,6 +15,8 @@ from datetime import datetime, timedelta
 #   we climbin in ya internets
 #   we snatchin your reddits up
 
+# NOTE: this is designed to be run periodically by cron or some other scheduler
+
 class PostSpider(BaseSpider):
     name = "reddit_post"
     allowed_domains = ["reddit.com"]
@@ -44,7 +46,8 @@ class PostSpider(BaseSpider):
                 item["domain"] = story['data']['domain']
                 item["author"] = story['data']['author']
                 item["subreddit"] = story['data']['subreddit']
-                
+                item["score"] = story['data']['score']
+
                 if story['data']['media'] == "null":
                     item["media_embed"] = True
                 else:

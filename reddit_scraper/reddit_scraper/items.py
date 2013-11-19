@@ -14,4 +14,4 @@ class RedditScraperItem(Item):
     author = Field()
     subreddit = Field()
     media_embed = Field()
-
+    score = Field()
