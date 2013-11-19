@@ -13,3 +13,7 @@ NEWSPIDER_MODULE = 'reddit_scraper.spiders'
 
 # Crawl responsibly by identifying yourself (and your website) on the user-agent
 #USER_AGENT = 'reddit_scraper (+http://www.yourdomain.com)'
+
+ITEM_PIPELINES = {
+    'reddit_scraper.pipelines.RedditScraperPipeline': 1,
+}
