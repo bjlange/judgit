@@ -21,8 +21,13 @@ class PostSpider(BaseSpider):
     name = "reddit_post"
     allowed_domains = ["reddit.com"]
     start_urls = [
-        # TODO: pick some subreddits
-        "http://reddit.com/r/doge/new.json",
+        "http://reddit.com/r/AskReddit/new.json",
+        "http://reddit.com/r/news/new.json",
+        "http://reddit.com/r/Music/new.json",
+        "http://reddit.com/r/videos/new.json",
+        "http://reddit.com/r/politics/new.json",
+        "http://reddit.com/r/funny/new.json",
+        "http://reddit.com/r/cats/new.json"
     ]
 
     def parse(self, response):
