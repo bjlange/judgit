@@ -27,7 +27,14 @@ class PostSpider(BaseSpider):
         "http://reddit.com/r/videos/new.json",
         "http://reddit.com/r/politics/new.json",
         "http://reddit.com/r/funny/new.json",
-        "http://reddit.com/r/cats/new.json"
+        "http://reddit.com/r/cats/new.json",
+        "http://reddit.com/r/AskReddit/hot.json",
+        "http://reddit.com/r/news/hot.json",
+        "http://reddit.com/r/Music/hot.json",
+        "http://reddit.com/r/videos/hot.json",
+        "http://reddit.com/r/politics/hot.json",
+        "http://reddit.com/r/funny/hot.json",
+        "http://reddit.com/r/cats/hot.json"
     ]
 
     def parse(self, response):
