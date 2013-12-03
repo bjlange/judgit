@@ -9,7 +9,6 @@
     <link rel="stylesheet" href="stylesheets/pygment_trac.css">
     <script src="javascripts/scale.fix.js"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
-
     <!--[if lt IE 9]>
     <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
@@ -17,44 +16,48 @@
   <body>
     <div class="wrapper">
       <header>
-        <h1>Judgit</h1>
-        <p>A machine learning approach to predicting popularity of a submission on Reddit, for EECS 349 at Northwestern University</p>
-        <p class="view"><a href="https://github.com/bjlange/judgit">View the Project on GitHub <small>bjlange/judgit</small></a></p>
+        <h1 class="header">Judgit</h1>
+        <p class="header">A machine learning approach to predicting popularity of a submission on Reddit, for EECS 349 at Northwestern University</p>
+
         <ul>
-          <li><a href="https://github.com/bjlange/judgit/zipball/master">Download <strong>ZIP File</strong></a></li>
-          <li><a href="https://github.com/bjlange/judgit/tarball/master">Download <strong>TAR Ball</strong></a></li>
-          <li><a href="https://github.com/bjlange/judgit">View On <strong>GitHub</strong></a></li>
+          <li class="download"><a class="buttons" href="https://github.com/bjlange/judgit/zipball/master">Download ZIP</a></li>
+          <li class="download"><a class="buttons" href="https://github.com/bjlange/judgit/tarball/master">Download TAR</a></li>
+          <li><a class="buttons github" href="https://github.com/bjlange/judgit">View On GitHub</a></li>
         </ul>
+
+        <p class="header">This project is maintained by <a class="header name" href="https://github.com/bjlange">bjlange</a></p>
+
+
       </header>
       <section>
-        <h1 id="background">Background</h1>
+        <h1>
+<a name="background" class="anchor" href="#background"><span class="octicon octicon-link"></span></a>Background</h1>
 
 <p>Content aggregation is a large, expanding business on the internet. The biggest content aggregation community, Reddit, gets about 15 million unique visitors and 150 million pageviews per month. Users post content from other websites, attracting readers and commenters. These posts are voted on by Reddit users, resulting in a score that reflects the success of the post. Subreddits are subcommunities within Reddit and work the same way, except that the community has a specific focus. A successful Reddit post can generate tens of thousands of hits to a particular website, so naturally website owners are interested in how to make successful posts.</p>
 
-<h1 id="project">Project</h1>
+<h1>
+<a name="project" class="anchor" href="#project"><span class="octicon octicon-link"></span></a>Project</h1>
 
 <p>Our project is to use the k-nearest-neighbors algorithm to predict the score that a new post will receive 48 hours after being posted. Specifically, we are focusing on the following high-volume subreddits:</p>
 
 <ul>
 <li>/r/AskReddit</li>
-<li>/r/News</li>
-<li>/r/Music</li>
-<li>/r/Videos</li>
-<li>/r/Politics</li>
-<li>/r/Funny</li>
+<li>/r/News </li>
+<li>/r/Music </li>
+<li>/r/Videos </li>
+<li>/r/Politics </li>
+<li>/r/Funny </li>
 <li>/r/Cats</li>
-</ul>
-
-<h1 id="currentprogress">Current Progress</h1>
+</ul><h1>
+<a name="current-progress" class="anchor" href="#current-progress"><span class="octicon octicon-link"></span></a>Current Progress</h1>
 
 <p>So far we have a server to develop on and a working scraper. The learner and the framework is still in progress. Check back in the next couple weeks for updates on our findings, and watch our project in progress at <a href="https://github.com/bjlange/judgit">Github</a>.</p>
       </section>
+      <footer>
+        <p><small>Hosted on <a href="http://pages.github.com">GitHub Pages</a> using the Dinky theme</small></p>
+      </footer>
     </div>
-    <footer>
-      <p>Project maintained by <a href="https://github.com/bjlange">bjlange</a></p>
-      <p>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></p>
-    </footer>
     <!--[if !IE]><script>fixScale(document);</script><![endif]-->
-    
+		
   </body>
 </html>
