@@ -30,17 +30,11 @@ function(key, word_lists) {
             obj[list[j]] = true;
         }
     }
-    var bob = {
-        words: Object.keys(obj)
-    };
-    return bob;
+    return obj;
 }
 """)
 
 results = db.posts.map_reduce(mapper, reducer, 'title_words')
-for doc in results.find():
-    print doc
-
-word_list = []
+word_list = results.find()[0]['value'].keys()
 
 print 'Done.'
