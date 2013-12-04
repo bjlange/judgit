@@ -18,12 +18,12 @@ submission type:
 from sklearn.neighbors import DistanceMetric
 from datetime import datetime
 from Levenshtein import distance
-from title_words import word_list
+#from title_words import word_list
 from itertools import izip
 import math
 import re
 
-
+word_list = []
 def get_features(post):
     dt = datetime.fromtimestamp(post['creation_time'])
     return {
@@ -70,7 +70,7 @@ def get_vector(title, word_list):
     if a title contains the 4th and 5th word in the six-word dictionary
     """
     title_words = re.split(r'\W', title.lower())
-    return [word in title_words for word in word_list]
+    return set(title_words) #[word in title_words for word in word_list]
 
 def title_distance(a_title, b_title):
     """
@@ -78,7 +78,7 @@ def title_distance(a_title, b_title):
     """
     a_vect = get_vector(a_title, word_list)
     b_vect = get_vector(b_title, word_list)
-    return sum(x != y for x, y in izip(a_vect, b_vect))
+    return len(a_vect | b_vect) - len(a_vect & b_vect)#sum(x != y for x, y in izip(a_vect, b_vect))
 
 def author_distance(a_author, b_author):
     return distance(a_author, b_author)
