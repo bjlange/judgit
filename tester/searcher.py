@@ -5,6 +5,7 @@ from sklearn.cross_validation import KFold
 import numpy as np
 sys.path.insert(0, '../learner')
 from regressor import KNearest
+from metrics import get_features
 
 client = MongoClient()
 posts = client.reddit.posts
@@ -19,6 +20,7 @@ for post in posts.find():
 		scoreToUse = score[1]
 		if (submissionTime + delta) < score [0]:
 			break
+	post = get_features(post)
 	post['realScore'] = scoreToUse
 	postArray.append(post)
 

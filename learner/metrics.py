@@ -34,9 +34,7 @@ def get_features(post):
     }
 
 default_weights = [1.0, 1.0, 1.0, 1.0, 1.0, 1.0]
-def post_distance(a_raw, b_raw, weights=default_weights):
-    a = get_features(a_raw)
-    b = get_features(b_raw)
+def post_distance(a, b, weights=default_weights):
     distance = weights[0] * day_distance(a['day_of_week'], b['day_of_week']) +\
                weights[1] * hour_distance(a['hour_of_day'], b['hour_of_day']) +\
                weights[2] * domain_distance(a['domain'], b['domain']) +\
