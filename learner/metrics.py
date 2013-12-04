@@ -54,11 +54,11 @@ def post_distance(a_raw, b_raw, weights=default_weights):
 
 def day_distance(a_day, b_day):
     dist = abs(a_day - b_day)
-    return max(dist, 7 - a_day)
+    return min(dist, 7 - a_day)
 
 def hour_distance(a_hour, b_hour):
     dist = abs(a_hour - b_hour)
-    return max(dist, 24 - dist)
+    return min(dist, 24 - dist)
 
 def domain_distance(a_domain, b_domain):
     return distance(a_domain, b_domain)
@@ -84,4 +84,4 @@ def author_distance(a_author, b_author):
     return distance(a_author, b_author)
 
 def subreddit_distance(a_subreddit, b_subreddit):
-    return 1.0 if a_subreddit == b_subreddit else 0.0
+    return 0.0 if a_subreddit == b_subreddit else 1.0
