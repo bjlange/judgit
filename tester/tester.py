@@ -22,15 +22,14 @@ for post in posts.find():
 	postArray.append(post)
 
 averageScore = float(sum(scoreArray)) / float(len(scoreArray))
-averageScore = int(averageScore)
 print averageScore
 
 kf = KFold(len(scoreArray), n_folds=30, indices=True)
 
-sseArray = []
+mseArray = []
 for train, test in kf:
 	sse = 0
 	for testIndex in test:
 		sse += (averageScore - scoreArray[testIndex]) ** 2
-	sseArray.append(sse)
-print sseArray
+	mseArray.append(sse / len(test))
+print mseArray
