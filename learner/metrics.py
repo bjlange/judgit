@@ -17,13 +17,11 @@ submission type:
 
 from sklearn.neighbors import DistanceMetric
 from datetime import datetime
-from Levenshtein import distance
-#from title_words import word_list
+from Levenshtein import distance as ldist
 from itertools import izip
 import math
 import re
 
-word_list = []
 def get_features(post):
     dt = datetime.fromtimestamp(post['creation_time'])
     return {
@@ -35,13 +33,8 @@ def get_features(post):
         'subreddit': post['subreddit'],
     }
 
-def normalize(vector):
-    mag = math.sqrt(sum(x*x for x in vector))
-    return [x*1.0/mag for x in vector]
-
 default_weights = [1.0, 1.0, 1.0, 1.0, 1.0, 1.0]
 def post_distance(a_raw, b_raw, weights=default_weights):
-    weights = normalize(weights)
     a = get_features(a_raw)
     b = get_features(b_raw)
     distance = weights[0] * day_distance(a['day_of_week'], b['day_of_week']) +\
@@ -61,9 +54,9 @@ def hour_distance(a_hour, b_hour):
     return min(dist, 24 - dist)
 
 def domain_distance(a_domain, b_domain):
-    return distance(a_domain, b_domain)
+    return ldist(a_domain, b_domain)
 
-def get_vector(title, word_list):
+def get_vector(title):
     """
     Return the dictionary word vectors for the words in both titles, e.g.
         000110
@@ -76,12 +69,12 @@ def title_distance(a_title, b_title):
     """
     Return the hamming distance between two word vectors
     """
-    a_vect = get_vector(a_title, word_list)
-    b_vect = get_vector(b_title, word_list)
+    a_vect = get_vector(a_title)
+    b_vect = get_vector(b_title)
     return len(a_vect | b_vect) - len(a_vect & b_vect)#sum(x != y for x, y in izip(a_vect, b_vect))
 
 def author_distance(a_author, b_author):
-    return distance(a_author, b_author)
+    return ldist(a_author, b_author)
 
 def subreddit_distance(a_subreddit, b_subreddit):
     return 0.0 if a_subreddit == b_subreddit else 1.0
