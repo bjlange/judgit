@@ -26,33 +26,56 @@
         </ul>
       </header>
       <section>
-        <h1>
-<a name="background" class="anchor" href="#background"><span class="octicon octicon-link"></span></a>Background</h1>
+<h1 id="background">Background</h1>
 
 <p>Content aggregation is a large, expanding business on the internet. The biggest content aggregation community, Reddit, gets about 15 million unique visitors and 150 million pageviews per month. Users post content from other websites, attracting readers and commenters. These posts are voted on by Reddit users, resulting in a score that reflects the success of the post. Subreddits are subcommunities within Reddit and work the same way, except that the community has a specific focus. A successful Reddit post can generate tens of thousands of hits to a particular website, so naturally website owners are interested in how to make successful posts.</p>
 
-<h1>
-<a name="project" class="anchor" href="#project"><span class="octicon octicon-link"></span></a>Project</h1>
+<h1 id="project">Project</h1>
 
 <p>Our project is to use the k-nearest-neighbors algorithm to predict the score that a new post will receive 48 hours after being posted. Specifically, we are focusing on the following high-volume subreddits:</p>
 
 <ul>
 <li>/r/AskReddit</li>
-<li>/r/News </li>
-<li>/r/Music </li>
-<li>/r/Videos </li>
-<li>/r/Politics </li>
-<li>/r/Funny </li>
+<li>/r/News</li>
+<li>/r/Music</li>
+<li>/r/Videos</li>
+<li>/r/Politics</li>
+<li>/r/Funny</li>
 <li>/r/Cats</li>
-</ul><h1>
-<a name="current-progress" class="anchor" href="#current-progress"><span class="octicon octicon-link"></span></a>Current Progress</h1>
+</ul>
+
+<h1 id="features">Features</h1>
+
+<p>Our classifier considers the following features of a Reddit post:</p>
+
+<ul>
+<li><strong>day of week:</strong> users may only be online on certain days so the day of week would affect visibility</li>
+<li><strong>time of day:</strong> users may only be online at certain times so the time of day would affect visibility</li>
+<li><strong>domain of the linked content:</strong> users may be more inclined to click submissions from sources they are familiar with</li>
+<li><strong>submission title:</strong> how descriptive or interesting a title is may determine how much attention it receives</li>
+<li><strong>submission author:</strong> reputable users may garner more attention</li>
+<li><strong>Subreddit:</strong> different Subreddits have different community sizes, thus affecting how many votes it could have</li>
+<li><strong>submission type:</strong> users may prefer one type of medium over another</li>
+</ul>
+
+<h2 id="distancemetrics">Distance metrics</h2>
+
+<p>To find distance between posts using the features above, we employed the following metrics:</p>
+
+<ul>
+<li><strong>discrete metrics</strong> (d(a,b) = 0 if they are the same, d(a,b) = 1 if they are different) for submission type and subreddit</li>
+<li><strong>string edit distance</strong> for author and domain</li>
+<li><strong>number of days/hours between a and b</strong> (whichever is shorter with wraparound) for day of the week/time of day</li>
+<li><strong>Hamming distance between bag of word vectors</strong> for submission titles. Suppose we have a dictionary of all words found in submission titles. For each submission title, we compute a binary sequence e.g. 0000100011, with a 1 in each position where a dictionary word is in that title and a 0 otherwise. We use the hamming distance between these sequences.</li>
+</ul>
+
+<h1 id="currentprogress">Current Progress</h1>
 
 <p>So far we have a server to develop on and a working scraper. The learner and the framework is still in progress. Check back in the next couple weeks for updates on our findings, and watch our project in progress at <a href="https://github.com/bjlange/judgit">Github</a>.</p>
-<h1>Contact the authors:</h1>
-<p>
-  <a href="mailto:brianlange@u.northwestern.edu" target="_top">Brian Lange</a> // <a href="mailto:wesleysun2013@u.northwestern.edu" target="_top">Wesley Sun</a> // <a href="mailto:sheng.wu@u.northwestern.edu" target="_top">Sheng Wu</a>
-</p>
 
+<h1 id="contacttheauthors:">Contact the authors:</h1>
+
+<p><a href="mailto:brianlange@u.northwestern.edu" target="_top">Brian Lange</a> // <a href="mailto:wesleysun2013@u.northwestern.edu" target="_top">Wesley Sun</a> // <a href="mailto:sheng.wu@u.northwestern.edu" target="_top">Sheng Wu</a></p>
       </section>
       <footer>
         <p><small>Hosted on <a href="http://pages.github.com">GitHub Pages</a> using the Dinky theme</small></p>
