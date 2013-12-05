@@ -24,7 +24,7 @@ for post in posts.find():
 	post['realScore'] = scoreToUse
 	postArray.append(post)
 
-kf = KFold(len(postArray), n_folds=30, indices=True)
+kf = KFold(len(postArray), n_folds=30, indices=True, random_state=42)
 
 trainingIndices = None
 testingIndices = None
@@ -38,5 +38,10 @@ testingData = [postArray[i] for i in testingIndices]
 
 regressor = KNearest(trainingData)
 
+#import cProfile
+sse = 0
 for post in testingData:
-	print 'predicted: %s\treal:%s' % (regressor.regress(post, 1, [1.0, 1.0, 1.0, 1.0, 1.0, 1.0]), post['realScore'])
+	#cProfile.run('regressor.regress(post, 1, [1.0, 1.0, 1.0, 1.0, 1.0, 1.0])')
+	#print 'predicted: %s\treal:%s' % (regressor.regress(post, 1, [1.0, 1.0, 1.0, 1.0, 1.0, 1.0]), post['realScore'])
+	sse += (regressor.regress(post, 1, [1.0, 1.0, 1.0, 1.0, 1.0 ,1.0]) - post['realScore']) ** 2
+print sse / len(testingData)

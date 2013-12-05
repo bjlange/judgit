@@ -22,13 +22,14 @@ from itertools import izip
 import math
 import re
 
+splitter = re.compile(r'\W')
 def get_features(post):
     dt = datetime.fromtimestamp(post['creation_time'])
     return {
         'day_of_week': dt.weekday(),
         'hour_of_day': dt.hour + dt.minute/60.,
         'domain': post['domain'],
-        'title': post['title'],
+        'title': set(splitter.split(post['title'].lower())),
         'author': post['author'],
         'subreddit': post['subreddit'],
     }
@@ -54,21 +55,10 @@ def hour_distance(a_hour, b_hour):
 def domain_distance(a_domain, b_domain):
     return ldist(a_domain, b_domain)
 
-def get_vector(title):
-    """
-    Return the dictionary word vectors for the words in both titles, e.g.
-        000110
-    if a title contains the 4th and 5th word in the six-word dictionary
-    """
-    title_words = re.split(r'\W', title.lower())
-    return set(title_words) #[word in title_words for word in word_list]
-
-def title_distance(a_title, b_title):
+def title_distance(a_vect, b_vect):
     """
     Return the hamming distance between two word vectors
     """
-    a_vect = get_vector(a_title)
-    b_vect = get_vector(b_title)
     return len(a_vect | b_vect) - len(a_vect & b_vect)#sum(x != y for x, y in izip(a_vect, b_vect))
 
 def author_distance(a_author, b_author):
