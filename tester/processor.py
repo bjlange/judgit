@@ -41,6 +41,7 @@ if __name__ == '__main__':
 	print 'starting'
 	currentFold = 1
 	for train, test in kf:
+		print 'on fold %s' % (currentFold)
 		trainingIndices = train
 		testingIndices = test
 		trainingData = [postArray[i] for i in trainingIndices]
