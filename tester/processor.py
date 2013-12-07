@@ -51,6 +51,6 @@ if __name__ == '__main__':
 			path = os.path.join('data', 'fold%s' % (currentFold), post['id'])
 			with open(path, 'w') as f:
 				for d in distances:
-					f.write(','.join(d))
+					f.write(','.join(str(x) for x in d))
 
 		currentFold += 1
