@@ -1,5 +1,4 @@
 import sys, os
-import json
 from pymongo import MongoClient
 from datetime import datetime, timedelta
 from sklearn.cross_validation import KFold
@@ -51,6 +50,7 @@ if __name__ == '__main__':
 			distances = getDistances(post, trainingData)
 			path = os.path.join('data', 'fold%s' % (currentFold), post['id'])
 			with open(path, 'w') as f:
-				f.write(json.dumps(distances))
+				for d in distances:
+					f.write(','.join(d))
 
 		currentFold += 1
