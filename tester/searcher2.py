@@ -41,8 +41,8 @@ if __name__ == '__main__':
 
 	#import cProfile
 	print 'starting'
-	with open('results.txt', 'w') as f:
-		for i in range(3):
+	with open('results2.txt', 'w') as f:
+		for i in range(3, 6):
 			for val in [0.0, .25, .5, 2.0, 4.0]:
 				weights = [1.0, 1.0, 1.0, 1.0, 1.0, 1.0]
 				sse = 0
