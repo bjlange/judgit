@@ -39,9 +39,17 @@ testingData = [postArray[i] for i in testingIndices]
 regressor = KNearest(trainingData)
 
 #import cProfile
-sse = 0
-for post in testingData:
+with open('results.txt', 'w') as f:
+	for i in range(6):
+		for val in [0, .25, .5, 1, 2, 4]:
+			sse = 0
+			weights = [1.0, 1.0, 1.0, 1.0, 1.0, 1.0]
+			weights[i] = val
+			for post in testingData:
 	#cProfile.run('regressor.regress(post, 1, [1.0, 1.0, 1.0, 1.0, 1.0, 1.0])')
 	#print 'predicted: %s\treal:%s' % (regressor.regress(post, 1, [1.0, 1.0, 1.0, 1.0, 1.0, 1.0]), post['realScore'])
-	sse += (regressor.regress(post, 1, [1.0, 1.0, 1.0, 1.0, 1.0 ,1.0]) - post['realScore']) ** 2
-print sse / len(testingData)
+				sse += (regressor.regress(post, 1, weights) - post['realScore']) ** 2
+			mse =  sse / len(testingData)
+			results = 'weights = %s\tk = %s\tmse = %s\n' % (weights, 1, mse)
+			print results
+			f.write(results)

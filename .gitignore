@@ -1,6 +1,6 @@
 *.py[cod]
 *.sw?
-
+tester/results.txt
 # C extensions
 *.so
 
