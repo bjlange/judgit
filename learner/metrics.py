@@ -14,12 +14,8 @@ submission author:
 subreddit:
 submission type:
 """
-
-from sklearn.neighbors import DistanceMetric
 from datetime import datetime
 from Levenshtein import distance as ldist
-from itertools import izip
-import math
 import re
 
 splitter = re.compile(r'\W')
