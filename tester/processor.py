@@ -48,7 +48,7 @@ if __name__ == '__main__':
 
 		for post in testingData:
 			distances = getDistances(post, trainingData)
-			path = os.path.join('data', 'fold' % (currentFold), post['id'])
+			path = os.path.join('data', 'fold%s' % (currentFold), post['id'])
 			with open(path, 'w') as f:
 				f.write(json.dumps(distances))
 
