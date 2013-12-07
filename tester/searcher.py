@@ -41,7 +41,7 @@ regressor = KNearest(trainingData)
 #import cProfile
 with open('results.txt', 'w') as f:
 	for i in range(6):
-		for val in [0, .25, .5, 1, 2, 4]:
+		for val in [0.0, .25, .5, 2.0, 4.0]:
 			sse = 0
 			weights = [1.0, 1.0, 1.0, 1.0, 1.0, 1.0]
 			weights[i] = val
