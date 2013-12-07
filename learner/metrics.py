@@ -28,6 +28,7 @@ def get_features(post):
         'title': set(splitter.split(post['title'].lower())),
         'author': post['author'],
         'subreddit': post['subreddit'],
+        'id': post['_id']
     }
 
 default_weights = [1.0, 1.0, 1.0, 1.0, 1.0, 1.0]
@@ -39,6 +40,16 @@ def post_distance(a, b, weights=default_weights):
                weights[4] * author_distance(a['author'], b['author']) +\
                weights[5] * subreddit_distance(a['subreddit'], b['subreddit'])
     return distance
+
+def unweighted_distances(a, b):
+    return [
+        day_distance(a['day_of_week'], b['day_of_week']),
+        hour_distance(a['hour_of_day'], b['hour_of_day']),
+        domain_distance(a['domain'], b['domain']),
+        title_distance(a['title'], b['title']),
+        author_distance(a['author'], b['author']),
+        subreddit_distance(a['subreddit'], b['subreddit'])
+    ]
 
 def day_distance(a_day, b_day):
     dist = abs(a_day - b_day)
