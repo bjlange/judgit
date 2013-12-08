@@ -36,7 +36,7 @@ if __name__ == '__main__':
 	weights = [1.0, 1.0, 1.0, 1.0, 1.0, 1.0]
 
 	sse = 0.0
-	for post in posts:
+	for post in postArray:
 		path = os.path.join('data', 'fold1', post['id'])
 		with open(path, 'r') as f:
 			allDistances = [[float(x) for x in line.split(',')] for line in f.read().split('\n') if len(line) > 0]
