@@ -21,7 +21,7 @@ def generateWeights():
 
 if __name__ == '__main__':
 	path = os.path.join('data', 'fold1')
-	files = [f for f in os.listdir(path) if os.path.isfile(f)]
+	files = [f for f in os.listdir(path) if os.path.isfile(os.path.join('data', 'fold1', f))]
 	client = MongoClient()
 	posts = client.reddit.posts
 
