@@ -11,7 +11,7 @@ def weightedSum(weights, values):
 
 def generateWeights():
 	weights = []
-	for i in range(6):
+	for i in range(1, 6):
 		for val in [0.0, .25, .5, 2.0, 4.0]:
 			basic = [1.0, 1.0, 1.0, 1.0, 1.0, 1.0]
 			basic[i] = val

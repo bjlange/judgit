@@ -18,6 +18,28 @@ def getDistances(post, training):
 		allDistances.append(distances)
 	return allDistances
 
+def generateWeights():
+	weights = []
+	for i in range(6):
+		for val in [0.0, .25, .5, 2.0, 4.0]:
+			basic = [1.0, 1.0, 1.0, 1.0, 1.0, 1.0]
+			basic[i] = val
+			weights.append(basic)
+	weights.append([1.0, 1.0, 1.0, 1.0, 1.0, 1.0])
+	return weights
+
+def testWeights(weights, testingData, trainingData):
+	sseArray = [0.0] * len(weights)
+	print 'starting'
+	count = 1
+	for post in testingData:
+		print count
+		allDistances = getDistances(post, trainingData)
+		for i in range(len(weights)):
+			score = min(allDistances, key=lambda x: weightedSum(weights[i], x[0:6]))[6]
+			sseArray[i] += (score - post['realScore']) ** 2
+		count += 1
+	return sseArray
 
 def testK(kArray, testingData, trainingData):
 	sseArray = [0.0] * len(kArray)
@@ -34,28 +56,7 @@ def testK(kArray, testingData, trainingData):
 		count += 1
 	return sseArray
 
-def calcMSE(fold, testingData, trainingData):
-	sse = 0.0
-	count = 1
-	for post in testingData:
-		print '%s %s' % (fold, count)
-		allDistances = getDistances(post, trainingData)
-		items = nsmallest(5, allDistances, key=lambda x: weightedSum([1.0, 0.0, 4.0, 0.0, .25, 0.0], x[0:6]))
-		scores = map(lambda x: x[6], items)
-		score = sum(scores) / len(items)
-		sse += (score - post['realScore']) ** 2
-		count += 1
-	return sse / len(testingData)
-
-def calcPriorMSE(testingData, trainingData):
-	sse = 0.0
-	for post in testingData:
-		sse += (38.0594 - post['realScore']) ** 2
-	return sse / len(testingData)
-
-
 if __name__ == '__main__':
-	division = int(sys.argv[1])
 
 	client = MongoClient('zoidberg.wksun.com', 27017)
 	posts = client.reddit.posts
@@ -87,28 +88,21 @@ if __name__ == '__main__':
 	trainingData = [postArray[i] for i in trainingIndices]
 	testingData = [postArray[i] for i in testingIndices]
 
-	kf2 = KFold(len(testingData), n_folds=30, indices=True, random_state=42)
+	weights = generateWeights()
+
+	kf2 = KFold(len(trainingData), n_folds=30, indices=True, random_state=42)
 	toRegressIndices = None
 	toUseIndices = None
-	foldCount = 0
-	mseArray = [0.0] * 30
-	priorMSEArray = [0.0] * 30
 	for train, test in kf2:
-		if (division == 0 and foldCount <= 15) or (division == 1 and foldCount > 15):
-			toRegressIndices = test
-			toUseIndices = train
-			toRegress = [testingData[i] for i in toRegressIndices]
-			toUse = [testingData[i] for i in toUseIndices]
-
-			print 'train:%s test:%s' % (len(toRegress), len(toUse))
-			mseArray[foldCount] = calcMSE(foldCount, toRegress, toUse)
-			priorMSEArray[foldCount] = calcPriorMSE(toRegress, toUse)
-		foldCount += 1
-
-
-	with open('validate%s.txt' % (division),'w') as f:
-		for i in range(len(mseArray)):
-			f.write('%s\t%s\n' % (i, mseArray[i]))
-	with open('validatePrior%s.txt' % (division), 'w') as f:
-		for i in range(len(priorMSEArray)):
-			f.write('%s\t%s\n' % (i, priorMSEArray[i]))
+		toRegressIndices = test
+		toUseIndices = train
+		break
+	toRegress = [trainingData[i] for i in toRegressIndices]
+	toUse = [trainingData[i] for i in toUseIndices]
+	print 'train:%s test:%s' % (len(toRegress), len(toUse))
+	#sseArray = testWeights(weights, toRegress, toUse)
+	kArray = [1, 2, 3, 4, 5]
+	sseArray = testK(kArray, toRegress, toUse)
+	with open('ultK.txt','w') as f:
+		for i in range(len(kArray)):
+			f.write('%s\t%s\n' % (kArray[i], sseArray[i] / len(toRegress)))

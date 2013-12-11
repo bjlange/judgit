@@ -1,9 +1,13 @@
-import sys, os
+import sys
 from pymongo import MongoClient
 from datetime import datetime, timedelta
 from sklearn.cross_validation import KFold
 sys.path.insert(0, '../learner')
+from regressor import KNearest
 from metrics import get_features, unweighted_distances
+
+def weightedSum(weights, values):
+	return sum(map(lambda x,y: x*y, weights, values))
 
 def getDistances(post, training):
 	allDistances = []
@@ -12,6 +16,16 @@ def getDistances(post, training):
 		distances.append(t['realScore'])
 		allDistances.append(distances)
 	return allDistances
+
+def generateWeights():
+	weights = []
+	for i in range(1, 6):
+		for val in [0.0, .25, .5, 2.0, 4.0]:
+			basic = [1.0, 1.0, 1.0, 1.0, 1.0, 1.0]
+			basic[i] = val
+			weights.append(basic)
+	weights.append([1.0, 1.0, 1.0, 1.0, 1.0, 1.0])
+	return weights
 
 if __name__ == '__main__':
 
@@ -37,21 +51,26 @@ if __name__ == '__main__':
 	trainingIndices = None
 	testingIndices = None
 
-	print 'starting'
-	currentFold = 1
 	for train, test in kf:
-		print 'on fold %s' % (currentFold)
 		trainingIndices = train
 		testingIndices = test
-		trainingData = [postArray[i] for i in trainingIndices]
-		testingData = [postArray[i] for i in testingIndices]
-
-		for post in testingData:
-			distances = getDistances(post, trainingData)
-			path = os.path.join('data', 'fold%s' % (currentFold), post['id'])
-			with open(path, 'w') as f:
-				for d in distances:
-					f.write(','.join(str(x) for x in d) + '\n')
-
-		currentFold += 1
 		break
+
+	trainingData = [postArray[i] for i in trainingIndices]
+	testingData = [postArray[i] for i in testingIndices]
+
+	weights = generateWeights()[10:20]
+
+	sseArray = [0.0] * len(weights)
+	print 'starting'
+	count = 1
+	for post in testingData:
+		print count
+		allDistances = getDistances(post, trainingData)
+		for i in range(len(weights)):
+			score = min(allDistances, key=lambda x: weightedSum(weights[i], x[0:6]))[6]
+			sseArray[i] += (score - post['realScore']) ** 2
+		count += 1
+	with open('awesomeresults2.txt','w') as f:
+		for i in range(len(weights)):
+			f.write('%s\t%s\n' % (weights[i], sseArray[i] / len(testingData)))
