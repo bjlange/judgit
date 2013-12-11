@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Reddit score predictor</title>
+  <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap.min.css">
+  <link rel="stylesheet" href="datepicker.css">
+  <script src="http://code.jquery.com/jquery-2.0.3.min.js"></script>
+  <script src="http://netdna.bootstrapcdn.com/bootstrap/3.0.3/js/bootstrap.min.js"></script>
+  <script src="bootstrap-datepicker.js"></script>
+</head>
+<body>
+  <div class="container">
+    <div class="row">
+      <div class="col-md-9">
+        <h1>Predict your reddit score with Judgit</h1>
+        <p class="lead">Enter a title, date, username, subreddit, and link for your submission and we'll predict the score you'll have on Reddit after 24 hours.</p>
+      </div>
+      <div class="col-md-9">
+        <form class="form-horizontal" role="form">
+          <div class="form-group">
+            <label for="title" class="col-sm-2 control-label">Title</label>
+            <div class="col-sm-10">
+              <input type="text" name="title" class="form-control" id="title" placeholder="e.g. You'll be in tears after watching these 45 ridiculously cute cat GIFs">
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="date" class="col-sm-2 control-label">Date</label>
+            <div class="col-sm-10">
+              <input name="date" type="text" class="form-control" id="date" placeholder="Click to select">
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="time" class="col-sm-2 control-label">Time</label>
+            <div class="col-sm-10">
+              <input name="time" type="text" class="form-control" id="time" placeholder="e.g. 8:12 pm">
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="username" class="col-sm-2 control-label">Username</label>
+            <div class="col-sm-10">
+              <input type="text" name="username" class="form-control" id="username" placeholder="e.g. leeroyjenkins123">
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="subreddit" class="col-sm-2 control-label">Subreddit</label>
+            <div class="col-sm-10">
+              <select id="subreddit" class="form-control" name="subreddit">
+                <option value="askreddit">/r/AskReddit</option>
+                <option value="news">/r/News</option>
+                <option value="music">/r/Music</option>
+                <option value="videos">/r/Videos</option>
+                <option value="politics">/r/Politics</option>
+                <option value="funny">/r/Funny</option>
+                <option value="cats">/r/Cats</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="link" class="col-sm-2 control-label">link</label>
+            <div class="col-sm-10">
+              <input type="text" name="link" class="form-control" id="link" placeholder="e.g. http://www.theonion.com/articles/top-quotes-from-2013,34794/">
+            </div>
+          </div>
+          <div class="form-group">
+            <div class="col-sm-offset-2 col-sm-10">
+              <button type="submit" class="btn btn-primary">Predict my score!</button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+  <script>
+    var d = $('#date').datepicker({
+      format: 'mm-dd-yyyy',
+      autoclose: true
+    })
+  </script>
+</body>
+</html>
