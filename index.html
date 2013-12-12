@@ -42,50 +42,50 @@
       <section>
 <h1 id="background">Background</h1>
 
-<p>Content aggregation is a large, expanding business on the internet. The biggest content aggregation community, Reddit, gets about 15 million unique visitors and 150 million pageviews per month. Users post content from other websites, attracting readers and commenters. These posts are voted on by Reddit users, resulting in a score that reflects the success of the post. Subreddits are subcommunities within Reddit and work the same way, except that the community has a specific focus. A successful Reddit post can generate tens of thousands of hits to a particular website, so naturally website owners are interested in how to make successful posts.</p>
+<p>Content aggregation is a huge business on the internet. Reddit alone gets 15 million unique visitors and 150 million pageviews per month. On Reddit, users post text or links to webpages that are voted on by other users, resulting in a score that determines how many future visitors will see the post. Successful Reddit posts generate tens to hundreds of thousands of hits for a webpage, resulting in valuable ad revenue. Websites like Gawker for which web traffic is a main source of revenue would love to know exactly what to post, when to post it, and what words to use in a title to maximize the number of visitors they get.</p>
 
-<h1 id="project">Project</h1>
+<img src="images/example.png" />
+<h1 id="projectapproach">Project &amp; Approach</h1>
 
-<p>Our project is to use the k-nearest-neighbors algorithm to predict the score that a new post will receive 48 hours after being posted. Specifically, we are focusing on the following high-volume subreddits:</p>
-
-<ul>
-<li>/r/AskReddit</li>
-<li>/r/News</li>
-<li>/r/Music</li>
-<li>/r/Videos</li>
-<li>/r/Politics</li>
-<li>/r/Funny</li>
-<li>/r/Cats</li>
-</ul>
-
-<h1 id="features">Features</h1>
-
-<p>Our classifier considers the following features of a Reddit post:</p>
+<p>We set out to predict the score of a Reddit post using data from the Reddit API. Existing work in this area has used regression to predict future score, but we wanted to use only data from the Reddit API and to see how accurately a learner could perform. With this project, we wanted to explore these questions:</p>
 
 <ul>
-<li><strong>day of week:</strong> users may only be online on certain days so the day of week would affect visibility</li>
-<li><strong>time of day:</strong> users may only be online at certain times so the time of day would affect visibility</li>
-<li><strong>domain of the linked content:</strong> users may be more inclined to click submissions from sources they are familiar with</li>
-<li><strong>submission title:</strong> how descriptive or interesting a title is may determine how much attention it receives</li>
-<li><strong>submission author:</strong> reputable users may garner more attention</li>
-<li><strong>Subreddit:</strong> different Subreddits have different community sizes, thus affecting how many votes it could have</li>
-<li><strong>submission type:</strong> users may prefer one type of medium over another</li>
+<li>Can we accurately predict scores using only data available at post time from the Reddit API?</li>
+<li>To maximize score, what aspects of a post are the most important?</li>
+<li>What effect will different k-values have on the effectiveness of our learner</li>
 </ul>
+<p>For our learner, we used a k-nearest neighbor regressor implemented in Python. To predict the score of a given Reddit post, the regressor finds the k “nearest” neighbors of that post by combining several distance measures to find the k nearest stories. Then, it predicts a score for the candidate story by outputting the mean score of those k nearest neighbors.</p>
+<img src="images/knearest.png" />
 
-<h2 id="distancemetrics">Distance metrics</h2>
+<h1 id="datatraining">Data &amp; Training</h1>
 
-<p>To find distance between posts using the features above, we employed the following metrics:</p>
+<p>Data analyzed included all new posts from November 20 to December 7, 2013 on 7 subreddits, for a total of 159,695 posts. Subreddits are communities within Reddit that accept posts within specific topics, and we chose the following that are among the most popular: /r/AskReddit, /r/News, /r/Music, /r/Videos, /r/Politics, /r/Funny, and /r/Cats.</p>
+
+<p>Our regressor considers the following features of a Reddit post:</p>
 
 <ul>
-<li><strong>discrete metrics</strong> (d(a,b) = 0 if they are the same, d(a,b) = 1 if they are different) for submission type and subreddit</li>
-<li><strong>string edit distance</strong> for author and domain</li>
-<li><strong>number of days/hours between a and b</strong> (whichever is shorter with wraparound) for day of the week/time of day</li>
-<li><strong>Hamming distance between bag of word vectors</strong> for submission titles. Suppose we have a dictionary of all words found in submission titles. For each submission title, we compute a binary sequence e.g. 0000100011, with a 1 in each position where a dictionary word is in that title and a 0 otherwise. We use the hamming distance between these sequences.</li>
+<li><strong>day of week posted:</strong> the bulk of users may only be online on certain days, so the day of week would affect visibility. Distance = number of days between posts (with wraparound)</li>
+<li><strong>hour of day posted:</strong> the bulk of users may only be online at certain times, so the time of day would affect visibility. Distance = number of hours between posts (with wraparound)</li>
+<li><strong>domain of the linked content:</strong> users may be more inclined to click submissions from sources they are familiar with. Distance = Levenshtein edit distance between domains</li>
+<li><strong>submission title:</strong> how descriptive or interesting a title is may determine how much attention it receives. Distance = Hamming 100000 distance between bag-of-word vectors</li>
+<li><strong>submission author:</strong> reputable users may garner more attention. Distance = Levenshtein distance between author usernames</li>
+<li><strong>Subreddit:</strong> different Subreddits have different community sizes, thus affecting how many votes it could have. Distance = discrete metric</li>
 </ul>
 
-<h1 id="currentprogress">Current Progress</h1>
+<p>To train our learner, we tried several weights for each feature, varying the weights one at a time, evaluating its performance using 30-fold cross validation on half of the data and recording the total mean squared error. We used the same procedure to test several values of k.
+Success for us was whether our learner had a lower mean square error than baseline – that is, using the average score of a post (38.0594 points) for all score predictions.</p>
 
-<p>Our analysis is currently running, trying varying feature weights and k values. For a prior, we used the average score of stories after 48 hours, and found the average mean squared error value of the prior to be 64189.958 and the standard deviation of that MSE to be 17062.267. The mean squared error of a run with equal weights and k=1, run with 30-fold cross validation, was 134569.872. Check back in the next couple weeks for updates on our findings, and watch our project in progress at <a href="https://github.com/bjlange/judgit">Github</a>.</p>
+<h1 id="resultsanalysis">Results &amp; Analysis</h1>
+<img src="images/grid.png" />
+<img src="images/kgraph.png" />
+<p>We found that the optimal set of weights was (1, 0, 4, 0, .25, 0) with k = 5. Using half of the data (the half not used for development), we found that the mean squared error using our optimal values was 70305.9 pts2 w/stdev of 15723, versus baseline’s MSE of 61862.2 pts2 w/stdev of 15939. Based on a paired-sample t-test performed on each fold of validation, our regressor conclusively performed worse than baseline.</p>
+
+<h1 id="conclusion">Conclusion</h1>
+
+<p>We learned that the scope of our project was not sufficient to accurately predict the score of Reddit submissions. One of our limitations was that training k-nearest-neighbor learners can take a significant amount of time. For future work to improve accuracy, we would try including additional features (e.g. linked content) and explore more of the space of feature weight combinations.</p>
+<p>
+  <strong>For more detail, please read our paper, linked in the sidebar/header. Thanks for your attention!</strong>
+</p>
       </section>
       <footer>
         <!-- <p><small>Hosted on <a href="http://pages.github.com">GitHub Pages</a> using the Dinky theme</small></p> -->
